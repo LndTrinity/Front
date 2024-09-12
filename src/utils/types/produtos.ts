@@ -1,5 +1,6 @@
 import { MarcaI } from "./marcas"
 import { TipoI } from "./tipo"
+import { FotoI } from "./fotos"
 
 export interface ProdutoI {
   id: number,     
@@ -15,5 +16,5 @@ export interface ProdutoI {
   marca: MarcaI,  
   marcaId: String,
   tipoId: number,   
-  fotos: string    
+  fotos:  FotoI[]    
 }

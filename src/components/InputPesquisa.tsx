@@ -1,4 +1,4 @@
-import { CarroI } from "@/utils/types/carros"
+import { ProdutoI } from "@/utils/types/produtos"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import { useState } from "react"
@@ -7,9 +7,11 @@ type inputs = {
     termo: string
 }
 type InputPesquisaProps = {
-    setCarros: React.Dispatch<React.SetStateAction<CarroI[]>>
+    setCarros: React.Dispatch<React.SetStateAction<ProdutoI[]>>
+    mostraDestaque: () => void
+    setTitulo: React.Dispatch<React.SetStateAction<string>>
 }
-export function InputPesquisa({setCarros}: InputPesquisaProps) {
+export function InputPesquisa({setCarros,mostraDestaque,setTitulo}: InputPesquisaProps) {
 
     const {register, handleSubmit,reset} = useForm<inputs>()
 
@@ -18,29 +20,20 @@ export function InputPesquisa({setCarros}: InputPesquisaProps) {
             toast.warning("Digite, no mínimo, 2 caracteres para a pesquisa")
             return
         }
-        const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/carros/pesquisa/${data.termo}`) 
+        const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/produtos/pesquisa/${data.termo}`) 
         const dados = await response.json()     
         
         setCarros(dados)
+        setTitulo(`Resultado para ${data.termo}`)
 
         if (dados.length == 0){
-            // toast.error("Não há veículos com o termo pesquisado")
+            // toast.error("Não há produtos com o termo pesquisado")
             reset({termo: ""})
             return
         }
        
     }
-    function mostraDestaque() {
-
-        const {register, handleSubmit,reset} = useForm<inputs>()
-        async function enviarPesquisa(data: inputs){
-            const response = await fetch(`${process.env.NEXT_PUBLIC_URL_API}/carros`) 
-            const dados = await response.json()     
-            console.log(dados)
-            setCarros(dados)
-            reset({termo:""})
-           
-        }}
+    
     
    
 
